@@ -1,2 +1,2 @@
 Filters.Repo.start_link()
-ExUnit.start()
+ExUnit.start(trace: true)
