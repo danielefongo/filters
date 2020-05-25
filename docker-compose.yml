@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  filters:
+    build: "."
+    volumes:
+      - .:/$PWD
+    working_dir: $PWD
+    depends_on:
+      - db
+
+  db:
+    image: postgres:9.6-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: filters
+      POSTGRES_USER: filters
+      POSTGRES_DB: filters
