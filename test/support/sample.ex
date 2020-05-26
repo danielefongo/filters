@@ -1,4 +1,4 @@
-defmodule Filters.Sample do
+defmodule Filters.Support.Sample do
   use Ecto.Schema
 
   schema "sample" do
