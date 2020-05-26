@@ -24,14 +24,28 @@ defmodule Filters.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.1"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:credo, "~> 1.4", only: [:dev, :test]},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
   defp aliases do
     [
       "ecto.init": ["ecto.create --quiet", "ecto.migrate --quiet"],
-      test: ["ecto.init", "test"]
+      test: ["ecto.init", "test"],
+      check: [
+        "compile --all-warnings --ignore-module-conflict --warnings-as-errors --debug-info",
+        "format.check",
+        "credo -a",
+        "dialyzer"
+      ],
+      "format.all": [
+        "format mix.exs 'lib/**/*.{ex,exs}' 'test/**/*.{ex,exs}' 'config/*.{ex,exs}'"
+      ],
+      "format.check": [
+        "format --check-formatted mix.exs 'lib/**/*.{ex,exs}' 'test/**/*.{ex,exs}' 'config/*.{ex, exs}'"
+      ]
     ]
   end
 
