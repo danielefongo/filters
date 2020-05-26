@@ -6,9 +6,7 @@ defmodule Filters.Condition.GenericTest do
   test "repeat filter callback for each option" do
     filter(
       Sample,
-      by(%{
-        [Equal, :all] => [foo: 1, bar: 2]
-      })
+      by(equal_all: [foo: 1, bar: 2])
     )
 
     assert_receive {:foo, 1}
@@ -22,10 +20,7 @@ defmodule Filters.Condition.GenericTest do
         %Sample{name: "foo", surname: "bar", age: 2}
       ])
 
-      condition =
-        by(%{
-          [Equal, :all] => []
-        })
+      condition = by(equal_all: [])
 
       result = find_with_condition(condition)
 
@@ -35,10 +30,7 @@ defmodule Filters.Condition.GenericTest do
     test "find with 1 field" do
       insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-      condition =
-        by(%{
-          [Equal, :all] => [name: "foo"]
-        })
+      condition = by(equal_all: [name: "foo"])
 
       result = find_with_condition(condition)
 
@@ -48,10 +40,7 @@ defmodule Filters.Condition.GenericTest do
     test "find with many fields" do
       insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-      condition =
-        by(%{
-          [Equal, :all] => [name: "foo", surname: "bar"]
-        })
+      condition = by(equal_all: [name: "foo", surname: "bar"])
 
       result = find_with_condition(condition)
 
@@ -66,10 +55,7 @@ defmodule Filters.Condition.GenericTest do
         %Sample{name: "foo", surname: "bar", age: 2}
       ])
 
-      condition =
-        by(%{
-          [Equal, :any] => []
-        })
+      condition = by(equal_any: [])
 
       result = find_with_condition(condition)
 
@@ -79,10 +65,7 @@ defmodule Filters.Condition.GenericTest do
     test "find with 1 field" do
       insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-      condition =
-        by(%{
-          [Equal, :any] => [name: "foo"]
-        })
+      condition = by(equal_any: [name: "foo"])
 
       result = find_with_condition(condition)
 
@@ -92,10 +75,7 @@ defmodule Filters.Condition.GenericTest do
     test "find with many fields" do
       insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo2", surname: "bar2"}])
 
-      condition =
-        by(%{
-          [Equal, :any] => [name: "foo", surname: "bar2"]
-        })
+      condition = by(equal_any: [name: "foo", surname: "bar2"])
 
       result = find_with_condition(condition)
 
@@ -110,10 +90,7 @@ defmodule Filters.Condition.GenericTest do
         %Sample{name: "foo", surname: "bar", age: 2}
       ])
 
-      condition =
-        by(%{
-          [Equal, :none] => []
-        })
+      condition = by(equal_none: [])
 
       result = find_with_condition(condition)
 
@@ -123,10 +100,7 @@ defmodule Filters.Condition.GenericTest do
     test "find with 1 field" do
       insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-      condition =
-        by(%{
-          [Equal, :none] => [name: "foo"]
-        })
+      condition = by(equal_none: [name: "foo"])
 
       result = find_with_condition(condition)
 
@@ -136,10 +110,7 @@ defmodule Filters.Condition.GenericTest do
     test "find with many fields" do
       insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo2", surname: "bar2"}])
 
-      condition =
-        by(%{
-          [Equal, :none] => [name: "foo", surname: "bar"]
-        })
+      condition = by(equal_none: [name: "foo", surname: "bar"])
 
       result = find_with_condition(condition)
 
@@ -148,7 +119,7 @@ defmodule Filters.Condition.GenericTest do
   end
 end
 
-defmodule Equal do
+defmodule Filters.Condition.Equal do
   use Filters.Condition.Generic
 
   def filter_callback({key, value}) do

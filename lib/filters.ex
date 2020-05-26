@@ -1,26 +1,43 @@
+defmodule Filters.Take.All do
+  import Ecto.Query
+  def run([], _filter), do: true
+  def run([data | others], filter), do: dynamic(^run(data, filter) and ^run(others, filter))
+  def run(data, filter), do: dynamic(^filter.(data))
+end
+
+defmodule Filters.Take.Any do
+  import Ecto.Query
+  def run([], _filter), do: false
+  def run([data | others], filter), do: dynamic(^run(data, filter) or ^run(others, filter))
+  def run(data, filter), do: dynamic(^filter.(data))
+end
+
+defmodule Filters.Take.None do
+  import Ecto.Query
+  def run([], _filter), do: true
+  def run([data | others], filter), do: dynamic(^run(data, filter) and ^run(others, filter))
+  def run(data, filter), do: dynamic(not (^filter.(data)))
+end
+
 defmodule Filters do
   import Ecto.Query
+  alias Filters.Take.All
 
   def filter(query, nil), do: query
   def filter(query, filter), do: where(query, ^filter)
 
-  def all([], _filter), do: true
-  def all([data | others], filter), do: dynamic(^all(data, filter) and ^all(others, filter))
-  def all(data, filter), do: dynamic(^filter.(data))
-
-  def any([], _filter), do: false
-  def any([data | others], filter), do: dynamic(^any(data, filter) or ^any(others, filter))
-  def any(data, filter), do: dynamic(^filter.(data))
-
-  def none([], _filter), do: true
-  def none([data | others], filter), do: dynamic(^none(data, filter) and ^none(others, filter))
-  def none(data, filter), do: dynamic(not ^filter.(data))
-
   defmacro by(args) do
     quote bind_quoted: [args: args] do
       args
-      |> Enum.map(fn {[module, kind], options} -> apply(module, :run, [kind, options]) end)
-      |> Filters.all(fn echoed -> echoed end)
+      |> Enum.map(fn {key, options} ->
+        [condition_string, take_string | _] = String.split(Atom.to_string(key), "_")
+
+        condition = String.to_existing_atom("Elixir.Filters.Condition." <> Macro.camelize(condition_string))
+        take = String.to_existing_atom("Elixir.Filters.Take." <> Macro.camelize(take_string))
+
+        apply(condition, :run, [take, options])
+      end)
+      |> All.run(fn echoed -> echoed end)
     end
   end
 end

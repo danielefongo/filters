@@ -6,27 +6,27 @@ defmodule FiltersTest do
   test "pass options to conditions" do
     filter(
       Sample,
-      by(%{
-        [Condition1, :all] => [foo: 1],
-        [Condition2, :any] => [bar: 2, baz: 3]
-      })
+      by([
+        condition1_all: [foo: 1],
+        condition2_any: [bar: 2, baz: 3]
+      ])
     )
 
-    assert_receive foo: 1, condition: 1, kind: :all
-    assert_receive bar: 2, baz: 3, condition: 2, kind: :any
+    assert_receive foo: 1, condition: 1, take: Filters.Take.All
+    assert_receive bar: 2, baz: 3, condition: 2, take: Filters.Take.Any
   end
 end
 
-defmodule Condition1 do
-  def run(kind, data) do
-    send(self(), Keyword.merge(data, condition: 1, kind: kind))
+defmodule Filters.Condition.Condition1 do
+  def run(take, data) do
+    send(self(), Keyword.merge(data, condition: 1, take: take))
     true
   end
 end
 
-defmodule Condition2 do
-  def run(kind, data) do
-    send(self(), Keyword.merge(data, condition: 2, kind: kind))
+defmodule Filters.Condition.Condition2 do
+  def run(take, data) do
+    send(self(), Keyword.merge(data, condition: 2, take: take))
     true
   end
 end

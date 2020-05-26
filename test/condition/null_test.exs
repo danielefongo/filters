@@ -1,12 +1,11 @@
 defmodule Filters.Condition.NullTest do
   use ExUnit.Case
   use DbTest
-  alias Filters.Condition.Null
 
   test "retrieve zero elements" do
     insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    results = find_with_condition(by(%{[Null, :all] => [:name]}))
+    results = find_with_condition(by(null_all: [:name]))
 
     assert results == []
   end
@@ -14,7 +13,7 @@ defmodule Filters.Condition.NullTest do
   test "retrieve one element" do
     insert([%Sample{name: nil, surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    [retrieved_sample | []] = find_with_condition(by(%{[Null, :all] => [:name]}))
+    [retrieved_sample | []] = find_with_condition(by(null_all: [:name]))
 
     assert retrieved_sample.name == nil
     assert retrieved_sample.surname == "bar"
@@ -23,7 +22,7 @@ defmodule Filters.Condition.NullTest do
   test "retrieve two elements" do
     insert([%Sample{name: nil, surname: "bar"}, %Sample{name: nil, surname: "bar2"}])
 
-    [first, second | []] = find_with_condition(by(%{[Null, :all] => [:name]}))
+    [first, second | []] = find_with_condition(by(null_all: [:name]))
 
     assert first.surname == "bar"
     assert second.surname == "bar2"
