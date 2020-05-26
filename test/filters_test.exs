@@ -6,10 +6,10 @@ defmodule FiltersTest do
   test "pass options to conditions" do
     filter(
       Sample,
-      by([
+      by(
         condition1_all: [foo: 1],
         condition2_any: [bar: 2, baz: 3]
-      ])
+      )
     )
 
     assert_receive foo: 1, condition: 1, take: Filters.Take.All

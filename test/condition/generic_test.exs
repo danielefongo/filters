@@ -59,7 +59,7 @@ defmodule Filters.Condition.GenericTest do
 
       result = find_with_condition(condition)
 
-      assert length(result) == 0
+      assert result == []
     end
 
     test "find with 1 field" do
@@ -104,7 +104,7 @@ defmodule Filters.Condition.GenericTest do
 
       result = find_with_condition(condition)
 
-      assert length(result) == 0
+      assert result == []
     end
 
     test "find with many fields" do

@@ -14,8 +14,7 @@ defmodule Filters.Condition.NeTest do
   test "retrieve one element" do
     insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo2", surname: "bar2"}])
 
-    [retrieved_sample | []] =
-      find_with_condition(by(ne_all: [name: "foo", surname: "bar"]))
+    [retrieved_sample | []] = find_with_condition(by(ne_all: [name: "foo", surname: "bar"]))
 
     assert retrieved_sample.name == "foo2"
   end
