@@ -13,109 +13,18 @@ defmodule Filters.Condition.GenericTest do
     assert_receive {:bar, 2}
   end
 
-  describe "match all" do
-    test "find with 0 fields returns all" do
-      insert([
-        %Sample{name: "foo", surname: "bar", age: 1},
-        %Sample{name: "foo", surname: "bar", age: 2}
-      ])
+  test "properly match using Condition and Take" do
+    insert([
+      %Sample{name: "foo", surname: "bar", age: 1},
+      %Sample{name: "foo", surname: "baz", age: 2}
+    ])
 
-      condition = by(equal_all: [])
+    condition = by(equal_all: [name: "foo"])
 
-      result = find_with_condition(condition)
+    [first, second | _] = find_with_condition(condition)
 
-      assert length(result) == 2
-    end
-
-    test "find with 1 field" do
-      insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
-
-      condition = by(equal_all: [name: "foo"])
-
-      result = find_with_condition(condition)
-
-      assert length(result) == 2
-    end
-
-    test "find with many fields" do
-      insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
-
-      condition = by(equal_all: [name: "foo", surname: "bar"])
-
-      result = find_with_condition(condition)
-
-      assert length(result) == 1
-    end
-  end
-
-  describe "match any" do
-    test "find with 0 fields returns empty list" do
-      insert([
-        %Sample{name: "foo", surname: "bar", age: 1},
-        %Sample{name: "foo", surname: "bar", age: 2}
-      ])
-
-      condition = by(equal_any: [])
-
-      result = find_with_condition(condition)
-
-      assert result == []
-    end
-
-    test "find with 1 field" do
-      insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
-
-      condition = by(equal_any: [name: "foo"])
-
-      result = find_with_condition(condition)
-
-      assert length(result) == 2
-    end
-
-    test "find with many fields" do
-      insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo2", surname: "bar2"}])
-
-      condition = by(equal_any: [name: "foo", surname: "bar2"])
-
-      result = find_with_condition(condition)
-
-      assert length(result) == 2
-    end
-  end
-
-  describe "match none" do
-    test "find with 0 fields returns all" do
-      insert([
-        %Sample{name: "foo", surname: "bar", age: 1},
-        %Sample{name: "foo", surname: "bar", age: 2}
-      ])
-
-      condition = by(equal_none: [])
-
-      result = find_with_condition(condition)
-
-      assert length(result) == 2
-    end
-
-    test "find with 1 field" do
-      insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
-
-      condition = by(equal_none: [name: "foo"])
-
-      result = find_with_condition(condition)
-
-      assert result == []
-    end
-
-    test "find with many fields" do
-      insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo2", surname: "bar2"}])
-
-      condition = by(equal_none: [name: "foo", surname: "bar"])
-
-      result = find_with_condition(condition)
-
-      assert length(result) == 1
-    end
+    assert first.surname == "bar"
+    assert second.surname == "baz"
   end
 end
 
