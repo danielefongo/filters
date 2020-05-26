@@ -1,4 +1,4 @@
-defmodule Filters.DummyTest do
+defmodule FiltersTest do
   use ExUnit.Case
   use DbTest
   import Filters
