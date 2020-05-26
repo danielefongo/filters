@@ -1,24 +1,3 @@
-defmodule Filters.Take.All do
-  import Ecto.Query
-  def run([], _filter), do: true
-  def run([data | others], filter), do: dynamic(^run(data, filter) and ^run(others, filter))
-  def run(data, filter), do: dynamic(^filter.(data))
-end
-
-defmodule Filters.Take.Any do
-  import Ecto.Query
-  def run([], _filter), do: false
-  def run([data | others], filter), do: dynamic(^run(data, filter) or ^run(others, filter))
-  def run(data, filter), do: dynamic(^filter.(data))
-end
-
-defmodule Filters.Take.None do
-  import Ecto.Query
-  def run([], _filter), do: true
-  def run([data | others], filter), do: dynamic(^run(data, filter) and ^run(others, filter))
-  def run(data, filter), do: dynamic(not (^filter.(data)))
-end
-
 defmodule Filters do
   import Ecto.Query
   alias Filters.Take.All
