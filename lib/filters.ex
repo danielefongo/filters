@@ -10,4 +10,8 @@ defmodule Filters do
   def filter(query, nil), do: query
   def filter(query, filters), do: Enum.reduce(filters, query, &filter_next/2)
   defp filter_next(filter, query), do: where(query, ^filter)
+
+  def all([], _filter), do: true
+  def all([data], filter), do: dynamic(^filter.(data))
+  def all([data | others], filter), do: dynamic(^filter.(data) and ^all(others, filter))
 end
