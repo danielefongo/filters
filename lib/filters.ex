@@ -1,15 +1,8 @@
 defmodule Filters do
   import Ecto.Query
 
-  defmacro by(args) do
-    quote bind_quoted: [args: args] do
-      Enum.map(args, fn {[module, kind], options} -> apply(module, :run, [kind, options]) end)
-    end
-  end
-
   def filter(query, nil), do: query
-  def filter(query, filters), do: Enum.reduce(filters, query, &filter_next/2)
-  defp filter_next(filter, query), do: where(query, ^filter)
+  def filter(query, filter), do: where(query, ^filter)
 
   def all([], _filter), do: true
   def all([data], filter), do: dynamic(^filter.(data))
@@ -20,6 +13,14 @@ defmodule Filters do
   def any([data | others], filter), do: dynamic(^filter.(data) or ^any(others, filter))
 
   def none([], _filter), do: true
-  def none([data], filter), do: dynamic(not (^filter.(data)))
+  def none([data], filter), do: dynamic(not ^filter.(data))
   def none([data | others], filter), do: dynamic(not (^filter.(data)) and ^none(others, filter))
+
+  defmacro by(args) do
+    quote bind_quoted: [args: args] do
+      args
+      |> Enum.map(fn {[module, kind], options} -> apply(module, :run, [kind, options]) end)
+      |> Filters.all(fn echoed -> echoed end)
+    end
+  end
 end

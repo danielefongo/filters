@@ -14,8 +14,7 @@ defmodule Filters.Condition.NullTest do
   test "retrieve one element" do
     insert([%Sample{name: nil, surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    [retrieved_sample | []] =
-      find_with_condition(by(%{[Null, :all] => [:name]}))
+    [retrieved_sample | []] = find_with_condition(by(%{[Null, :all] => [:name]}))
 
     assert retrieved_sample.name == nil
     assert retrieved_sample.surname == "bar"
