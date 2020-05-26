@@ -3,7 +3,7 @@ defmodule Filters do
 
   defmacro by(args) do
     quote bind_quoted: [args: args] do
-      Enum.map(args, fn {module, options} -> apply(module, :run, [options]) end)
+      Enum.map(args, fn {[module, kind], options} -> apply(module, :run, [kind, options]) end)
     end
   end
 

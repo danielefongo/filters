@@ -5,25 +5,25 @@ defmodule Filters.DummyTest do
 
   test "pass options to conditions" do
     filter(Sample, by %{
-      Condition1 => [foo: 1],
-      Condition2 => [bar: 2, baz: 3]
+      [Condition1, :all] => [foo: 1],
+      [Condition2, :any] => [bar: 2, baz: 3]
     })
 
-    assert_receive [condition: 1, foo: 1]
-    assert_receive [condition: 2, bar: 2, baz: 3]
+    assert_receive [foo: 1, condition: 1, kind: :all]
+    assert_receive [bar: 2, baz: 3, condition: 2, kind: :any]
   end
 end
 
 defmodule Condition1 do
-  def run(data) do
-    send(self(), Keyword.put(data, :condition, 1))
+  def run(kind, data) do
+    send(self(), Keyword.merge(data, [condition: 1, kind: kind]))
     true
   end
 end
 
 defmodule Condition2 do
-  def run(data) do
-    send(self(), Keyword.put(data, :condition, 2))
+  def run(kind, data) do
+    send(self(), Keyword.merge(data, [condition: 2, kind: kind]))
     true
   end
 end
