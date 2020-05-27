@@ -16,7 +16,7 @@ defmodule Filters do
 
         take = String.to_existing_atom("Elixir.Filters.Take." <> Macro.camelize(take_string))
 
-        apply(condition, :run, [take, options])
+        apply(take, :run, [options, &condition.filter_callback/1])
       end)
       |> All.run(fn echoed -> echoed end)
     end
