@@ -14,7 +14,7 @@ defmodule DbTest do
 
       defp insert(element) when is_struct(element), do: Repo.insert(element)
 
-      defp find_with_condition(condition), do: Sample |> Filters.filter(condition) |> Repo.all()
+      defp find_matching(condition), do: Sample |> Filters.match(condition) |> Repo.all()
     end
   end
 end

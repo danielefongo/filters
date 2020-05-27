@@ -2,9 +2,6 @@ defmodule Filters do
   import Ecto.Query
   alias Filters.Take.All
 
-  def filter(query, nil), do: query
-  def filter(query, filter), do: where(query, ^filter)
-
   defmacro by(args) do
     quote bind_quoted: [args: args] do
       args
@@ -21,4 +18,7 @@ defmodule Filters do
       |> All.run(fn echoed -> echoed end)
     end
   end
+
+  def match(query), do: query
+  def match(query, args), do: where(query, ^by(args))
 end

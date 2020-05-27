@@ -4,12 +4,10 @@ defmodule FiltersTest do
   import Filters
 
   test "pass options to each condition" do
-    filter(
+    match(
       Sample,
-      by(
-        all_condition1: [foo: "foo"],
-        all_condition2: [bar: 2, baz: 3]
-      )
+      all_condition1: [foo: "foo"],
+      all_condition2: [bar: 2, baz: 3]
     )
 
     assert_receive condition: 1, data: {:foo, "foo"}
@@ -18,9 +16,9 @@ defmodule FiltersTest do
   end
 
   test "pass options to take" do
-    filter(
+    match(
       Sample,
-      by(take1_condition1: [bar: 2, baz: 3])
+      take1_condition1: [bar: 2, baz: 3]
     )
 
     fun = &Filters.Condition.Condition1.filter_callback/1
@@ -34,9 +32,7 @@ defmodule FiltersTest do
       %Sample{name: "foo", surname: "baz", age: 2}
     ])
 
-    condition = by(all_eq: [name: "foo"])
-
-    [first, second | _] = find_with_condition(condition)
+    [first, second | _] = find_matching(all_eq: [name: "foo"])
 
     assert first.surname == "bar"
     assert second.surname == "baz"

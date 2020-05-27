@@ -6,7 +6,7 @@ defmodule Filters.Condition.EqTest do
   test "retrieve zero elements" do
     insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    results = find_with_condition(by(all_eq: [name: "unknown_name"]))
+    results = find_matching(all_eq: [name: "unknown_name"])
 
     assert results == []
   end
@@ -14,7 +14,7 @@ defmodule Filters.Condition.EqTest do
   test "retrieve one element" do
     insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    [retrieved_sample | []] = find_with_condition(by(all_eq: [name: "foo", surname: "bar"]))
+    [retrieved_sample | []] = find_matching(all_eq: [name: "foo", surname: "bar"])
 
     assert retrieved_sample.name == "foo"
   end
@@ -22,7 +22,7 @@ defmodule Filters.Condition.EqTest do
   test "retrieve two elements" do
     insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    [first, second | []] = find_with_condition(by(all_eq: [name: "foo"]))
+    [first, second | []] = find_matching(all_eq: [name: "foo"])
 
     assert first.surname == "bar"
     assert second.surname == "bar2"
