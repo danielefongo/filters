@@ -1,4 +1,4 @@
-defmodule Filters.Condition.Deep do
+defmodule Filters.Condition.Of do
   @behaviour Filters.Behaviour.Condition
 
   import Filters

@@ -1,4 +1,4 @@
-defmodule Filters.Condition.DeepTest do
+defmodule Filters.Condition.OfTest do
   use ExUnit.Case
   use DbTest
 
@@ -8,8 +8,8 @@ defmodule Filters.Condition.DeepTest do
     [sample | []] =
       find_with_condition(
         by(
-          all_deep: [
-            all_deep: [
+          all_of: [
+            all_of: [
               all_eq: [name: "foo"],
               all_ne: [surname: "bar2"]
             ]
