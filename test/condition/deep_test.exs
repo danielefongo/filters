@@ -8,10 +8,10 @@ defmodule Filters.Condition.DeepTest do
     [sample | []] =
       find_with_condition(
         by(
-          deep_all: [
-            deep_all: [
-              eq_all: [name: "foo"],
-              ne_all: [surname: "bar2"]
+          all_deep: [
+            all_deep: [
+              all_eq: [name: "foo"],
+              all_ne: [surname: "bar2"]
             ]
           ]
         )

@@ -6,7 +6,7 @@ defmodule Filters.Condition.GenericTest do
   test "repeat filter callback for each option" do
     filter(
       Sample,
-      by(equal_all: [foo: 1, bar: 2])
+      by(all_equal: [foo: 1, bar: 2])
     )
 
     assert_receive {:foo, 1}
@@ -19,7 +19,7 @@ defmodule Filters.Condition.GenericTest do
       %Sample{name: "foo", surname: "baz", age: 2}
     ])
 
-    condition = by(equal_all: [name: "foo"])
+    condition = by(all_equal: [name: "foo"])
 
     [first, second | _] = find_with_condition(condition)
 

@@ -7,8 +7,8 @@ defmodule FiltersTest do
     filter(
       Sample,
       by(
-        condition1_all: [foo: 1],
-        condition2_any: [bar: 2, baz: 3]
+        all_condition1: [foo: 1],
+        any_condition2: [bar: 2, baz: 3]
       )
     )
 

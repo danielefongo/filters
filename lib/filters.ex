@@ -9,7 +9,7 @@ defmodule Filters do
     quote bind_quoted: [args: args] do
       args
       |> Enum.map(fn {key, options} ->
-        [condition_string, take_string | _] = String.split(Atom.to_string(key), "_")
+        [take_string, condition_string | _] = String.split(Atom.to_string(key), "_")
 
         condition =
           String.to_existing_atom("Elixir.Filters.Condition." <> Macro.camelize(condition_string))

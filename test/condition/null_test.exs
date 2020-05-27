@@ -5,7 +5,7 @@ defmodule Filters.Condition.NullTest do
   test "retrieve zero elements" do
     insert([%Sample{name: "foo", surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    results = find_with_condition(by(null_all: [:name]))
+    results = find_with_condition(by(all_null: [:name]))
 
     assert results == []
   end
@@ -13,7 +13,7 @@ defmodule Filters.Condition.NullTest do
   test "retrieve one element" do
     insert([%Sample{name: nil, surname: "bar"}, %Sample{name: "foo", surname: "bar2"}])
 
-    [retrieved_sample | []] = find_with_condition(by(null_all: [:name]))
+    [retrieved_sample | []] = find_with_condition(by(all_null: [:name]))
 
     assert retrieved_sample.name == nil
     assert retrieved_sample.surname == "bar"
@@ -22,7 +22,7 @@ defmodule Filters.Condition.NullTest do
   test "retrieve two elements" do
     insert([%Sample{name: nil, surname: "bar"}, %Sample{name: nil, surname: "bar2"}])
 
-    [first, second | []] = find_with_condition(by(null_all: [:name]))
+    [first, second | []] = find_with_condition(by(all_null: [:name]))
 
     assert first.surname == "bar"
     assert second.surname == "bar2"
