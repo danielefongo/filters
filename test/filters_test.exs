@@ -51,6 +51,9 @@ defmodule Filters.Take.Take1 do
 end
 
 defmodule Filters.Condition.Condition1 do
+  @behaviour Filters.Behaviour.Condition
+
+  @impl true
   def filter_callback(data) do
     send(self(), condition: 1, data: data)
     true
@@ -58,6 +61,9 @@ defmodule Filters.Condition.Condition1 do
 end
 
 defmodule Filters.Condition.Condition2 do
+  @behaviour Filters.Behaviour.Condition
+
+  @impl true
   def filter_callback(data) do
     send(self(), condition: 2, data: data)
     true

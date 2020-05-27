@@ -1,6 +1,8 @@
 defmodule Filters.Condition.Deep do
-  use Filters.Condition.Generic
+  @behaviour Filters.Behaviour.Condition
+
   import Filters
 
+  @impl true
   def filter_callback(args), do: by([args])
 end
